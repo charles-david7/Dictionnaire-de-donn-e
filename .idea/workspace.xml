@@ -6,23 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="c1e920b7-646d-49f6-aa0f-5f8eaee4bd04" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Components/Toolbar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/Components/epics/Toolbar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Components/addButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/Components/epics/formulaire.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Components/card.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/Components/epics/carte.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Components/datagrid.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Components/modal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/Components/epics/modal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Components/modifierCardButton.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Components/tablation.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Components/toogleButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/Components/epics/toogleButton.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Components/epics/carte.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/Components/epics/carte.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Card/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/Card/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Tab/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hooks/objet-metier/useEnregistrerObjetMetier.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/hooks/objet-metier/useEnregistrerObjetMetier.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/next.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/vercel.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/types/CardData.ts" beforeDir="false" afterPath="$PROJECT_DIR$/types/types-objets-metiers/CardData.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/types/ajouter-objet-metier.ts" beforeDir="false" afterPath="$PROJECT_DIR$/types/types-objets-metiers/ajouter-objet-metier.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/types/objet-metier.ts" beforeDir="false" afterPath="$PROJECT_DIR$/types/types-objets-metiers/objet-metier.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -114,7 +99,7 @@
       <workItem from="1721730922300" duration="500000" />
       <workItem from="1721895283154" duration="915000" />
       <workItem from="1721907546136" duration="6114000" />
-      <workItem from="1721983616633" duration="12061000" />
+      <workItem from="1721983616633" duration="14768000" />
     </task>
     <servers />
   </component>

@@ -362,6 +362,8 @@ const ObjetsMetierList: FC<ObjetsMetierListe> = ({objets, handleDelete, editing}
     const handleAccordionChange = (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
         setExpandedAccordion(isExpanded ? panel : null);
     };
+
+    console.log("Objets métiers: ", objets)
     return (
         <Grid container sx={{display: 'inline-grid'}} gap={2}>
             {objets.map((objetMetier) => {
@@ -389,7 +391,7 @@ const ObjetsMetierList: FC<ObjetsMetierListe> = ({objets, handleDelete, editing}
                                 id="panel1-header"
                             >
                                 {objetMetier.titre}
-                                {hoveredAccordion === objetMetier.id && edition !== objetMetier.id &&  (
+                                {hoveredAccordion === objetMetier.id && edition &&  (
                                     <Button
                                         startIcon={<EditIcon />}
                                         color={"error"}

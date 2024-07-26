@@ -573,6 +573,10 @@ const rows: ObjetMetierInformation[] = [
     }
 ]
 
+type ConsulterObjetMetierReponseBody = {
+    items: ObjetMetierInformation[]
+}
+
 const Page: FC = (): ReactNode => {
     const [nextId, setNextId] = useState<number>(1);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -589,9 +593,9 @@ const Page: FC = (): ReactNode => {
 
     useEffect(() => {
         // Récupérer les objets métiers depuis l'API
-        axios.get('http://localhost:3000/consulter-objets-metiers')
+        axios.get<ConsulterObjetMetierReponseBody>('http://localhost:3000/consulter-objets-metiers')
             .then(response => {
-                setObjetsInformations(response.data);
+                setObjetsInformations(response.data.items);
             })
             .catch(error => {
                 console.error("Erreur lors de la récupération des objets métiers:", error);
