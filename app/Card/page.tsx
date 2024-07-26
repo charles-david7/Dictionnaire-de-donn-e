@@ -1,15 +1,18 @@
 "use client";
 import {FC, ReactNode, useEffect, useState} from "react";
-import {useRouter} from "next/navigation";
 import {Box} from "@mui/system";
 import Stack from "@mui/material/Stack";
 import {CardData} from "@/types/CardData";
-import ObjetsMetierList, {ObjetMetierInformation} from "@/Components/card";
+import ObjetsMetierList from "@/Components/card";
 import BasicModal from "@/Components/modal";
-import {Card, CardContent, CardHeader} from "@mui/material";
+import {Card, CardContent, CardHeader, Snackbar, Alert, Grid} from "@mui/material";
 import Button from "@mui/material/Button";
-import { randomId } from "@mui/x-data-grid-generator";
-
+import {randomId} from "@mui/x-data-grid-generator";
+import axios from "axios";
+import EditIcon from "@mui/icons-material/Edit";
+import AddIcon from "@mui/icons-material/Add";
+import Typography from "@mui/material/Typography";
+import {ObjetMetier, ObjetMetierInformation} from "@/types/objet-metier"
 
 
 const rows: ObjetMetierInformation[] = [
@@ -574,13 +577,32 @@ const Page: FC = (): ReactNode => {
     const [nextId, setNextId] = useState<number>(1);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [objetsInformations, setObjetsInformations] = useState<ObjetMetierInformation[]>(rows)
+    const [editing, setEditing] = useState<boolean>(false);
+    // États pour la Snackbar
+    const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false);
+    const [snackbarMessage, setSnackbarMessage] = useState<string>('');
+    const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
+    const [isHovered, setIsHovered] = useState<boolean>(false);
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
+    };
+
+    useEffect(() => {
+        // Récupérer les objets métiers depuis l'API
+        axios.get('http://localhost:3000/consulter-objets-metiers')
+            .then(response => {
+                setObjetsInformations(response.data);
+            })
+            .catch(error => {
+                console.error("Erreur lors de la récupération des objets métiers:", error);
+                setSnackbarMessage('Erreur lors de la récupération des objets métiers.');
+                setSnackbarSeverity('error');
+                setSnackbarOpen(true);
+            });
+    }, []);
 
 
-
-
-
-
-        const handleCardAdded = (card: CardData) => {
+    const handleCardAdded = (card: CardData) => {
         setNextId(nextId + 1);
         console.log("Object Information", card)
         setObjetsInformations(prevState => [
@@ -594,52 +616,82 @@ const Page: FC = (): ReactNode => {
                 attributObjetMetierList: []
             }
         ])
+        axios.post('http://localhost:3000/objets-metiers', {
+            ...card,
+        }).then(response => {
+            console.log("Card mise à jour:", response.data);
+            setSnackbarMessage('Bravo! La carte a été ajoutée avec succès.');
+            setSnackbarSeverity('success');
+            setSnackbarOpen(true);
+
+        })
+            .catch(error => {
+                console.error("Erreur lors de la mise à jour de la card:", error);
+                setSnackbarMessage('Erreur lors de l\'ajout de la carte.');
+                setSnackbarSeverity('error');
+                setSnackbarOpen(true);
+            });
     };
-    useEffect(() => {
-        if (objetsInformations.length > 0) {
-            const lastAddedObject = objetsInformations[objetsInformations.length - 1];
 
-            const sendToBackend = async () => {
-                try {
-                    const response = await fetch('/api/datagrid/save', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(lastAddedObject),
-                    });
+    const handleDeleteCard = (objet: ObjetMetierInformation)=>{
+        setObjetsInformations(prev =>{
+            return prev.filter(e => e.id != objet.id)
+        })
+    }
 
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }const responseData = await response.json();
-                    console.log("Response from backend:", responseData);
-                } catch (error) {
-                    console.error('There was a problem with the fetch operation:', error);
-                }
-            };
+    const handleEditObjetsMetiers = ()=>{
+        setEditing(prevState => !prevState)
+    }
 
-            sendToBackend();
-        }
-    }, [objetsInformations]);
+
     const handleClose = () => {
         setIsModalOpen(false)
     }
 
     return (
-        <Card>
-            <CardHeader
-                action={
-                    <Button
-                        onClick={() => setIsModalOpen(true)}
-                    >
-                        Ajouter
-                    </Button>
-                }
-            />
-            <CardContent>
-                <Stack>
-                    <Box sx={{display: 'flex', marginTop: 2}}>
+        <Grid container>
+            <Grid item xs={12} p={3}>
+                <Card
+                    sx={{
+                        borderRadius: 2
+
+                    }}
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
+                >
+                    <CardHeader
+                        title={
+                            <Typography
+                                fontSize={22}
+                                fontWeight={600}
+                            >
+                                Gestion des objets métiers
+                            </Typography>
+                        }
+                        action={
+                            <Stack direction={"row"} gap={2}>
+                                <Button
+                                    startIcon={<AddIcon/>}
+                                    onClick={() => setIsModalOpen(true)}
+                                >
+                                    Ajouter
+                                </Button>
+                                {isHovered && (
+                                    <Button
+                                        startIcon={<EditIcon />}
+                                        color={"error"}
+                                        onClick={handleEditObjetsMetiers}
+                                    >
+                                        Editer
+                                    </Button>
+                                )}
+                            </Stack>
+                        }
+                    />
+                    <CardContent>
                         <ObjetsMetierList
+                            handleDelete={handleDeleteCard}
+                            editing={editing}
                             objets={objetsInformations}
                         />
                         <BasicModal
@@ -647,10 +699,19 @@ const Page: FC = (): ReactNode => {
                             onClose={handleClose}
                             onAdd={handleCardAdded}
                         />
-                    </Box>
-                </Stack>
-            </CardContent>
-        </Card>
+                    </CardContent>
+                    <Snackbar
+                        open={snackbarOpen}
+                        autoHideDuration={6000}
+                        onClose={handleSnackbarClose}
+                    >
+                        <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{width: '100%'}}>
+                            {snackbarMessage}
+                        </Alert>
+                    </Snackbar>
+                </Card>
+            </Grid>
+        </Grid>
     )
 }
 

@@ -13,6 +13,7 @@ const style = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 400,
+    borderRadius: "12px",
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
@@ -23,6 +24,7 @@ type BasicModalProps = {
     onClose: () => void;
     open: boolean;
     onAdd: (card: CardData) => void;
+    initialValues?: any;
 }
 
 
@@ -34,13 +36,11 @@ const BasicModal: FC<BasicModalProps> = (props: BasicModalProps) => {
         contrainte: string,
     ) => {
         const nextId = Math.random()
-        const newCard: CardData = {id: nextId, genre, titre, nomInitial: nomInitial, contrainte: contrainte};
-        props.onAdd(newCard)
-        props.onClose();
+        props.onAdd({id: nextId, genre, titre, nomInitial: nomInitial, contrainte: contrainte})
+        props.onClose()
     };
 
     return (
-        <div>
             <Modal
                 open={props.open}
                 onClose={props.onClose}
@@ -51,7 +51,6 @@ const BasicModal: FC<BasicModalProps> = (props: BasicModalProps) => {
                     <CardForm onAddCard={handleAddCard}></CardForm>
                 </Box>
             </Modal>
-        </div>
     );
 }
 
