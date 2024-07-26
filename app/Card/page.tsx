@@ -2,9 +2,9 @@
 import {FC, ReactNode, useEffect, useState} from "react";
 import {Box} from "@mui/system";
 import Stack from "@mui/material/Stack";
-import {CardData} from "@/types/CardData";
-import ObjetsMetierList from "@/Components/card";
-import BasicModal from "@/Components/modal";
+import {CardData} from "@/types/types-objets-metiers/CardData";
+import ObjetsMetierList from "@/Components/epics/carte";
+import BasicModal from "@/Components/epics/modal";
 import {Card, CardContent, CardHeader, Snackbar, Alert, Grid} from "@mui/material";
 import Button from "@mui/material/Button";
 import {randomId} from "@mui/x-data-grid-generator";
@@ -12,7 +12,7 @@ import axios from "axios";
 import EditIcon from "@mui/icons-material/Edit";
 import AddIcon from "@mui/icons-material/Add";
 import Typography from "@mui/material/Typography";
-import {ObjetMetier, ObjetMetierInformation} from "@/types/objet-metier"
+import {ObjetMetier, ObjetMetierInformation} from "@/types/types-objets-metiers/objet-metier"
 
 
 const rows: ObjetMetierInformation[] = [
@@ -602,7 +602,7 @@ const Page: FC = (): ReactNode => {
     }, []);
 
 
-    const handleCardAdded = (card: CardData) => {
+    const handleCardAjouter= (card: CardData) => {
         setNextId(nextId + 1);
         console.log("Object Information", card)
         setObjetsInformations(prevState => [
@@ -633,7 +633,7 @@ const Page: FC = (): ReactNode => {
             });
     };
 
-    const handleDeleteCard = (objet: ObjetMetierInformation)=>{
+    const handleCarteSupprimer = (objet: ObjetMetierInformation)=>{
         setObjetsInformations(prev =>{
             return prev.filter(e => e.id != objet.id)
         })
@@ -690,14 +690,14 @@ const Page: FC = (): ReactNode => {
                     />
                     <CardContent>
                         <ObjetsMetierList
-                            handleDelete={handleDeleteCard}
+                            handleDelete={handleCarteSupprimer}
                             editing={editing}
                             objets={objetsInformations}
                         />
                         <BasicModal
                             open={isModalOpen}
                             onClose={handleClose}
-                            onAdd={handleCardAdded}
+                            onAdd={handleCardAjouter}
                         />
                     </CardContent>
                     <Snackbar

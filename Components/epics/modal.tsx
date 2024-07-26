@@ -3,8 +3,8 @@ import * as React from 'react';
 import {FC, useEffect, useState} from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import CardForm from "@/Components/addButton";
-import {CardData} from "@/types/CardData";
+import CardForm from "@/Components/epics/formulaire";
+import {CardData} from "@/types/types-objets-metiers/CardData";
 
 
 const style = {
@@ -29,7 +29,7 @@ type BasicModalProps = {
 
 
 const BasicModal: FC<BasicModalProps> = (props: BasicModalProps) => {
-    const handleAddCard = (
+    const handleAjouterCard = (
         genre: string,
         titre: string,
         nomInitial: string,
@@ -48,7 +48,7 @@ const BasicModal: FC<BasicModalProps> = (props: BasicModalProps) => {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <CardForm onAddCard={handleAddCard}></CardForm>
+                    <CardForm onAddCard={handleAjouterCard}></CardForm>
                 </Box>
             </Modal>
     );

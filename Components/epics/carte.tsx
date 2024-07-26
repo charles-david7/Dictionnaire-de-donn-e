@@ -13,8 +13,6 @@ import {
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
-import AccordionActions from "@mui/material/AccordionActions";
-import DehazeIcon from '@mui/icons-material/Dehaze';
 import {FC, SyntheticEvent, useEffect, useState} from "react";
 import {randomId} from "@mui/x-data-grid-generator";
 import AddIcon from "@mui/icons-material/Add";
@@ -25,7 +23,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import axios from "axios";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import {ObjetMetierInformation, ObjetMetier} from "@/types/objet-metier"
+import {ObjetMetierInformation, ObjetMetier} from "@/types/types-objets-metiers/objet-metier"
 
 export type DetailsObjetMetierProps = {
     objets: ObjetMetier[]
@@ -107,12 +105,12 @@ function DetailsObjetMetierAccordion(props: DetailsObjetMetierProps) {
         }
     };
 
-    const handleEditClick = (id: GridRowId) => () => {
+    const handleEditerClick = (id: GridRowId) => () => {
         setRowModesModel({...rowModesModel, [id]: {mode: GridRowModes.Edit}});
         setSelectedRow(rows.find(r => r.donnee == id))
     };
 
-    const handleSaveClick = (id: GridRowId) => () => {
+    const handleSauvergarderClick = (id: GridRowId) => () => {
         setRowModesModel({...rowModesModel, [id]: {mode: GridRowModes.View}});
         const updatedRow = rows.find(row => row.id === id);
         if (updatedRow) {
@@ -137,14 +135,14 @@ function DetailsObjetMetierAccordion(props: DetailsObjetMetierProps) {
     };
 
 
-    const handleDeleteClick = (id: GridRowId) => () => {
+    const handleSupprimerClick = (id: GridRowId) => () => {
         const rowToDelete = rows.find(row => row.id === id);
         if (rowToDelete) {
             handleOpenDialog(rowToDelete);
         }
     };
 
-    const handleCancelClick = (id: GridRowId) => {
+    const handleAnnulerClick = (id: GridRowId) => {
         return () => {
             setRowModesModel({
                 ...rowModesModel,
@@ -216,9 +214,9 @@ function DetailsObjetMetierAccordion(props: DetailsObjetMetierProps) {
             width: 100,
             cellClassName: 'actions',
             renderCell: (params: GridRenderCellParams) => {
-                const isInEditMode = rowModesModel[params.id]?.mode === GridRowModes.Edit;
+                const editionMode = rowModesModel[params.id]?.mode === GridRowModes.Edit;
 
-                if (isInEditMode) {
+                if (editionMode) {
                     return [
                         <GridActionsCellItem
                             key={Math.random().toString()}
@@ -227,14 +225,14 @@ function DetailsObjetMetierAccordion(props: DetailsObjetMetierProps) {
                             sx={{
                                 color: 'primary.main',
                             }}
-                            onClick={handleSaveClick(params.id)}
+                            onClick={handleSauvergarderClick(params.id)}
                         />,
                         <GridActionsCellItem
                             key={params.id}
                             icon={<CancelIcon/>}
                             label="Cancel"
                             className="textPrimary"
-                            onClick={handleCancelClick(params.id)}
+                            onClick={handleAnnulerClick(params.id)}
                             color="inherit"
                         />,
                     ];
@@ -246,14 +244,14 @@ function DetailsObjetMetierAccordion(props: DetailsObjetMetierProps) {
                         icon={<EditIcon/>}
                         label="Edit"
                         className="textPrimary"
-                        onClick={handleEditClick(params.id)}
+                        onClick={handleEditerClick(params.id)}
                         color="inherit"
                     />,
                     <GridActionsCellItem
                         key={params.id}
                         icon={<DeleteIcon/>}
                         label="Delete"
-                        onClick={handleDeleteClick((params.id))}
+                        onClick={handleSupprimerClick((params.id))}
                         color="inherit"
                     />,
                 ];
@@ -275,7 +273,7 @@ function DetailsObjetMetierAccordion(props: DetailsObjetMetierProps) {
                 onRowEditStop={(params) => {
                     const editedRow = rows.find((row) => row.donnee === params.id);
                     if (editedRow) {
-                        handleDeleteClick(params.id as string);
+                        handleSupprimerClick(params.id as string);
                     }
                 }}
                 processRowUpdate={processRowUpdate}
@@ -328,14 +326,14 @@ type ObjetsMetierListe = {
 
 const ObjetsMetierList: FC<ObjetsMetierListe> = ({objets, handleDelete, editing}) => {
     const [hoveredAccordion, setHoveredAccordion] = useState<string | null>(null);
-    const [editings, setEditing] = useState<boolean>(false);
+    const [edition, setEdition] = useState<boolean>(false);
     const [expandedAccordion, setExpandedAccordion] = useState<string | null>(null);
     const [openAccordionDialog, setOpenAccordionDialog] = useState(false);
     const [accordionToDelete, setAccordionToDelete] = useState<ObjetMetierInformation | null>(null);
 
 
-    const handleEditObjetsMetiers = ()=>{
-        setEditing(prevState => !prevState)
+    const handleEditionObjetsMetiers = ()=>{
+        setEdition(prevState => !prevState)
     }
     const handleOpenAccordionDialog = (accordion: ObjetMetierInformation) => {
         setAccordionToDelete(accordion);
@@ -378,7 +376,7 @@ const ObjetsMetierList: FC<ObjetsMetierListe> = ({objets, handleDelete, editing}
                             onMouseLeave={() => setHoveredAccordion(null)}>
                             <AccordionSummary
                                 expandIcon={
-                                    editings && hoveredAccordion === objetMetier.id ? (
+                                    edition && hoveredAccordion === objetMetier.id ? (
                                         <IconButton onClick={deleteObjet(objetMetier)} color={editing ? "error" : "primary"}>
                                             <DeleteIcon/>
                                         </IconButton>
@@ -391,13 +389,13 @@ const ObjetsMetierList: FC<ObjetsMetierListe> = ({objets, handleDelete, editing}
                                 id="panel1-header"
                             >
                                 {objetMetier.titre}
-                                {hoveredAccordion === objetMetier.id && editings !== objetMetier.id &&  (
+                                {hoveredAccordion === objetMetier.id && edition !== objetMetier.id &&  (
                                     <Button
                                         startIcon={<EditIcon />}
                                         color={"error"}
                                         onClick={(event) => {
                                             event.stopPropagation();
-                                            handleEditObjetsMetiers();
+                                            handleEditionObjetsMetiers();
                                         }}
                                     >
                                     </Button>

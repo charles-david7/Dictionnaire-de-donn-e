@@ -2,11 +2,11 @@ import React, {useEffect, useState} from 'react';
 import {TextField} from "@mui/material";
 import {useRouter} from "next/navigation";
 import Stack from "@mui/material/Stack";
-import {GenreToggle} from "@/Components/toogleButton";
+import {GenreToggle} from "@/Components/epics/toogleButton";
 import Button from "@mui/material/Button";
 
 
-interface CardFormProps {
+interface CardFormulaireProps {
     onAddCard: (
         genre: string,
         nomInitial: string,
@@ -22,7 +22,7 @@ interface CardFormProps {
 
 }
 
-const CardForm: React.FC<CardFormProps> = ({onAddCard, initialValues}) => {
+const CardFormulaire: React.FC<CardFormulaireProps> = ({onAddCard, initialValues}) => {
     const [titre, setTitre] = useState(initialValues?.titre || '');
     const [genre, setGenre] = useState(initialValues?.genre || 'feminin');
     const [nomInitial, setNominitial] = useState(initialValues?.nomInitial || '');
@@ -58,9 +58,9 @@ const CardForm: React.FC<CardFormProps> = ({onAddCard, initialValues}) => {
                        required/>
             <TextField id="outlined-basic" label="Contrainte" variant="outlined" value={contrainte}
                        onChange={(e) => setContrainte(e.target.value)}/>
-            <Button type="submit">Ajouter</Button>
+            <Button type="submit">Sauvegarder</Button>
         </Stack>
     );
 };
 
-export default CardForm;
+export default CardFormulaire;

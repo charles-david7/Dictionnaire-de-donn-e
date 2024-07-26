@@ -1,18 +1,19 @@
 import "./globals.css";
 import {CssBaseline} from "@mui/material";
 import {Box} from "@mui/system";
-import Bar from "@/Components/Toolbar";
+
+import React from "react";
 
 
 export default function RootLayout({
-  children,
-}: Readonly<{
+                                     children,
+                                   }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
       <html>
       <body>
-      <Bar/>
+
       <CssBaseline/>
       <Box
           sx={{

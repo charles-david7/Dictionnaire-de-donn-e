@@ -1,4 +1,4 @@
-"use client";
+/*"use client";
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Stack from '@mui/material/Stack';
@@ -57,4 +57,4 @@ export default function Bar() {
             </ThemeProvider>
         </Stack>
     );
-}
+}*/

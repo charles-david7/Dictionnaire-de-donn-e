@@ -1,5 +1,5 @@
 import {useMutation} from "@tanstack/react-query";
-import {AjouterObjetMetier} from "@/types/ajouter-objet-metier";
+import {AjouterObjetMetier} from "@/types/types-objets-metiers/ajouter-objet-metier";
 import axios from "axios";
 
 
